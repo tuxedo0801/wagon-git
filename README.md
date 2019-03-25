@@ -1,6 +1,6 @@
 # Synergian wagon-git
 
-[![Build Status](https://travis-ci.com/tuxedo0801/wagon-git.svg?branch=master)
+![Build Status](https://travis-ci.com/tuxedo0801/wagon-git.svg?branch=master)
 
 ## User's manual is now available here:
 
