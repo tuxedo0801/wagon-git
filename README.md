@@ -61,7 +61,7 @@ Add to your pom:
 
 Add auth information to your settings.xml:
 
-```
+```xml
     <servers>
         ...
         <server>
