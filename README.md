@@ -1,6 +1,6 @@
 # Synergian wagon-git
 
-[![Build Status](https://drone.io/github.com/synergian/wagon-git/status.png)](https://drone.io/github.com/synergian/wagon-git/latest)
+[![Build Status](https://travis-ci.com/tuxedo0801/wagon-git.svg?branch=master)
 
 ## User's manual is now available here:
 
