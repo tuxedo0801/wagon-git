@@ -23,8 +23,8 @@
       <snapshotVersion>
         <classifier>shaded</classifier>
         <extension>jar</extension>
-        <value>0.3.2-20190325.120009-1</value>
-        <updated>20190325120009</updated>
+        <value>0.3.2-20190325.120231-2</value>
+        <updated>20190325120231</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
