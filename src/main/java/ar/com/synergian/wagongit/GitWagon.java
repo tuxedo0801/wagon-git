@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.wagon.ConnectionException;
@@ -17,6 +18,7 @@ import org.apache.maven.wagon.ResourceDoesNotExistException;
 import org.apache.maven.wagon.StreamWagon;
 import org.apache.maven.wagon.TransferFailedException;
 import org.apache.maven.wagon.authentication.AuthenticationException;
+import org.apache.maven.wagon.authentication.AuthenticationInfo;
 import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.observers.Debug;
 import org.apache.maven.wagon.resource.Resource;
@@ -116,6 +118,24 @@ public class GitWagon extends StreamWagon {
                     branch = url.substring(0, i);
                     remote = url.substring(i + 3, url.length());
                 }
+
+                /* ******************************** */
+                /* basic-auth for http/https */
+                AuthenticationInfo authenticationInfo = getAuthenticationInfo();
+                String userName = authenticationInfo.getUserName();
+                String password = authenticationInfo.getPassword();
+                boolean hasUserPassAuth = userName!=null && userName.length()>0 && password!=null && password.length()>0;
+                
+                if (remote.startsWith("https://") || remote.startsWith("http://") && hasUserPassAuth) {
+                    userName = URLEncoder.encode(userName, "UTF-8");
+                    password = URLEncoder.encode(password, "UTF-8");
+                    String[] remoteSplit = remote.split("://");
+                    remote = remoteSplit[0]+"://"+userName+":"+password+"@"+remoteSplit[1];
+                    log.info("Found user+pass in settings.xml, added basic-auth to remote http/https URL");
+                    log.debug("Remote URL now is: "+remote);
+                }
+                /* end of basic-auth for http/https */
+                /* ******************************** */
 
                 File workDir = Utils.createCheckoutDirectory(remote);
 
