@@ -140,24 +140,31 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>ar.com.synergian</groupId>
+                <artifactId>wagon-git</artifactId>
+                <version>${project.version}</version>
+            </extension>
+        </extensions>
     </build>
-
+    
     <scm>
         <url>https://github.com/tuxedo0801/wagon-git</url>             
         <connection>scm:git:ssh://git@github.com/tuxedo0801/wagon-git.git</connection>
         <tag>HEAD</tag>
     </scm>
-
+    
     <distributionManagement>
         <repository>
             <id>wagon-git-releases</id>
             <name>root1.de Releases</name>
-            <url>git:releases://git@github.com:tuxedo0801/wagon-git.git</url>
+            <url>git:releases://https://github.com/tuxedo0801/wagon-git.git</url>                 
         </repository>
         <snapshotRepository>
             <id>wagon-git-snapshots</id>
             <name>root1.de Snapshots</name>
-            <url>git:snapshots://git@github.com:tuxedo0801/wagon-git.git</url>
+            <url>git:snapshots://https://github.com/tuxedo0801/wagon-git.git</url>
         </snapshotRepository>
     </distributionManagement>
 
