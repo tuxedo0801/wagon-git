@@ -8,55 +8,56 @@ import java.security.NoSuchAlgorithmException;
 
 public final class Utils {
 
-	private Utils() {
-	}
+    private Utils() {
+    }
 
-	public static File createCheckoutDirectory(String path) throws GitException {
+    public static File createCheckoutDirectory(String path) throws GitException {
 
-		File dir = new File(System.getProperty("java.io.tmpdir"), "wagon-git-" + hashPath(path));
-		dir.mkdirs();
+        File dir = new File(System.getProperty("java.io.tmpdir"), "wagon-git-" + hashPath(path));
+        dir.mkdirs();
 
-		return dir;
-	}
+        return dir;
+    }
 
-	private static String sha1(String input) throws NoSuchAlgorithmException {
+    private static String sha1(String input) throws NoSuchAlgorithmException {
 
-		MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-		byte[] result = mDigest.digest(input.getBytes());
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < result.length; i++)
-			sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	/**
-	 * Creates a directory under given workDir for each URL, using the URL.
-	 * Normally a hash, but if unavailable, the URL encoding of the URL. We do
-	 * this in order to support multiple repos corresponding to different
-	 * remotes.
-	 */
-	private static String hashPath(String path) throws GitException {
-		try {
+    /**
+     * Creates a directory under given workDir for each URL, using the URL.
+     * Normally a hash, but if unavailable, the URL encoding of the URL. We do
+     * this in order to support multiple repos corresponding to different
+     * remotes.
+     */
+    private static String hashPath(String path) throws GitException {
+        try {
 
-			return sha1(path);
+            return sha1(path);
 
-		} catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
 
-			// Okay. Something more basic.
-			try {
+            // Okay. Something more basic.
+            try {
 
-				return URLEncoder.encode(path, "UTF-8");
+                return URLEncoder.encode(path, "UTF-8");
 
-			} catch (UnsupportedEncodingException x) {
-				throw new GitException("Unable to encode path", x);
-			}
-		}
-	}
+            } catch (UnsupportedEncodingException x) {
+                throw new GitException("Unable to encode path", x);
+            }
+        }
+    }
 
-	public static boolean getBooleanEnvironmentProperty(String key) {
+    public static boolean getBooleanEnvironmentProperty(String key) {
 
-		return Boolean.parseBoolean(System.getProperty(key, "false"));
+        return Boolean.parseBoolean(System.getProperty(key, "false"));
 
-	}
+    }
 }

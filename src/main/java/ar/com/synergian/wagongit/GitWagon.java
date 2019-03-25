@@ -24,130 +24,134 @@ import org.codehaus.plexus.util.FileUtils;
 
 public class GitWagon extends StreamWagon {
 
-	private final boolean debug = Utils.getBooleanEnvironmentProperty("wagon.git.debug");
-	private final boolean safeCheckout = Utils.getBooleanEnvironmentProperty("wagon.git.safe.checkout");
-	private final boolean skipEmptyCommit = Utils.getBooleanEnvironmentProperty("wagon.git.skip.empty.commit");
+    private final boolean debug = Utils.getBooleanEnvironmentProperty("wagon.git.debug");
+    private final boolean safeCheckout = Utils.getBooleanEnvironmentProperty("wagon.git.safe.checkout");
+    private final boolean skipEmptyCommit = Utils.getBooleanEnvironmentProperty("wagon.git.skip.empty.commit");
 
-	private final ScmLogger log = new GitWagonLog(debug);
+    private final ScmLogger log = new GitWagonLog(debug);
 
-	private GitBackend git = null;
+    private GitBackend git = null;
 
-	public GitWagon() {
+    public GitWagon() {
 
-		if (debug) {
-			Debug d = new Debug();
-			addSessionListener(d);
-			addTransferListener(d);
-		}
+        if (debug) {
+            Debug d = new Debug();
+            addSessionListener(d);
+            addTransferListener(d);
+        }
 
-	}
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void fillInputData(InputData inputData) throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException {
+    /**
+     * {@inheritDoc}
+     */
+    public void fillInputData(InputData inputData) throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException {
 
-		log.debug("Invoked fillInputData()");
+        log.debug("Invoked fillInputData()");
 
-		Resource resource = inputData.getResource();
+        Resource resource = inputData.getResource();
 
-		File file = new File(git.workDir, resource.getName());
+        File file = new File(git.workDir, resource.getName());
 
-		if (!file.exists()) {
-			throw new ResourceDoesNotExistException("File: " + file + " does not exist");
-		}
+        if (!file.exists()) {
+            throw new ResourceDoesNotExistException("File: " + file + " does not exist");
+        }
 
-		try {
-			InputStream in = new BufferedInputStream(new FileInputStream(file));
+        try {
+            InputStream in = new BufferedInputStream(new FileInputStream(file));
 
-			inputData.setInputStream(in);
+            inputData.setInputStream(in);
 
-			resource.setContentLength(file.length());
+            resource.setContentLength(file.length());
 
-			resource.setLastModified(file.lastModified());
-		} catch (FileNotFoundException e) {
-			throw new TransferFailedException("Could not read from file: " + file.getAbsolutePath(), e);
-		}
-	}
+            resource.setLastModified(file.lastModified());
+        } catch (FileNotFoundException e) {
+            throw new TransferFailedException("Could not read from file: " + file.getAbsolutePath(), e);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void fillOutputData(OutputData outputData) throws TransferFailedException {
+    /**
+     * {@inheritDoc}
+     */
+    public void fillOutputData(OutputData outputData) throws TransferFailedException {
 
-		log.debug("Invoked fillOutputData()");
+        log.debug("Invoked fillOutputData()");
 
-		Resource resource = outputData.getResource();
+        Resource resource = outputData.getResource();
 
-		File file = new File(git.workDir, resource.getName());
+        File file = new File(git.workDir, resource.getName());
 
-		createParentDirectories(file);
+        createParentDirectories(file);
 
-		OutputStream outputStream = new BufferedOutputStream(new LazyFileOutputStream(file));
+        OutputStream outputStream = new BufferedOutputStream(new LazyFileOutputStream(file));
 
-		outputData.setOutputStream(outputStream);
-	}
+        outputData.setOutputStream(outputStream);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected void openConnectionInternal() throws ConnectionException, AuthenticationException {
+    /**
+     * {@inheritDoc}
+     */
+    protected void openConnectionInternal() throws ConnectionException, AuthenticationException {
 
-		log.debug("Invoked openConnectionInternal()");
+        log.debug("Invoked openConnectionInternal()");
 
-		if (git == null) {
-			try {
+        if (git == null) {
+            try {
 
-				String url = getRepository().getUrl();
+                String url = getRepository().getUrl();
 
-				if (url.endsWith("/"))
-					url = url.substring(0, url.length() - 1);
+                if (url.endsWith("/")) {
+                    url = url.substring(0, url.length() - 1);
+                }
 
-				String remote;
-				String branch;
+                String remote;
+                String branch;
 
-				url = url.substring("git:".length());
-				int i = url.indexOf(':');
-				if (i < 0) {
-					remote = url;
-					branch = "master";
-				} else {
-					branch = url.substring(0, i);
-					remote = url.substring(i + 3, url.length());
-				}
+                url = url.substring("git:".length());
+                int i = url.indexOf(':');
+                if (i < 0) {
+                    remote = url;
+                    branch = "master";
+                } else {
+                    branch = url.substring(0, i);
+                    remote = url.substring(i + 3, url.length());
+                }
 
-				File workDir = Utils.createCheckoutDirectory(remote);
+                File workDir = Utils.createCheckoutDirectory(remote);
 
-				if (!workDir.exists() || !workDir.isDirectory() || !workDir.canWrite())
-					throw new ConnectionException("Unable to create working directory");
+                if (!workDir.exists() || !workDir.isDirectory() || !workDir.canWrite()) {
+                    throw new ConnectionException("Unable to create working directory");
+                }
 
-				if (safeCheckout)
-					FileUtils.cleanDirectory(workDir);
+                if (safeCheckout) {
+                    FileUtils.cleanDirectory(workDir);
+                }
 
-				git = new GitBackend(workDir, remote, branch, log);
-				git.pullAll();
-			} catch (Exception e) {
-				throw new ConnectionException("Unable to pull git repository: " + e.getMessage(), e);
-			}
-		}
-	}
+                git = new GitBackend(workDir, remote, branch, log);
+                git.pullAll();
+            } catch (Exception e) {
+                throw new ConnectionException("Unable to pull git repository: " + e.getMessage(), e);
+            }
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void closeConnection() throws ConnectionException {
+    /**
+     * {@inheritDoc}
+     */
+    public void closeConnection() throws ConnectionException {
 
-		log.debug("Invoked closeConnection()");
+        log.debug("Invoked closeConnection()");
 
-		try {
+        try {
 
-			git.pushAll(skipEmptyCommit);
+            git.pushAll(skipEmptyCommit);
 
-			if (safeCheckout)
-				FileUtils.cleanDirectory(git.workDir);
+            if (safeCheckout) {
+                FileUtils.cleanDirectory(git.workDir);
+            }
 
-		} catch (Exception e) {
-			throw new ConnectionException("Unable to push git repostory: " + e.getMessage(), e);
-		}
-	}
+        } catch (Exception e) {
+            throw new ConnectionException("Unable to push git repostory: " + e.getMessage(), e);
+        }
+    }
 }
