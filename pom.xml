@@ -95,21 +95,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.3</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.6</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <goals>deploy site-deploy</goals>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.0</version>
                 <executions>
@@ -137,7 +122,7 @@
             <!-- ########################################################### -->
             <!-- COMMENT FOR INITIAL DEPLOYMENT TO BREAK DEPENDENCY-CIRCLE   -->
             <!-- RUN "mvn install", AND UNCOMMENT AGAIN TO BE ABLE TO DEPLOY -->
-<!--            <extension>
+            <!--            <extension>
                 <groupId>de.root1</groupId>
                 <artifactId>wagon-git</artifactId>
                 <version>${project.version}</version>
