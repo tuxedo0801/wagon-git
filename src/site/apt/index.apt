@@ -1,6 +1,6 @@
 wagon-git
 
-    A Maven component (a wagon) that enables deploying artifacts in remote Git SCM repositories.
+    A Maven component (a wagon) that enables deploying artifacts in remote Git SCM repositories. This project is based on ar.com.synergian:wagon-git:0.3.1-SNAPSHOT, the initial work of Martin Schonaker (mschonaker@gmail.com)
     
     <<wagon-git>> Requires <<{{{http://git-scm.com/}git}}>> already installed and available in the environment PATH variable.
     

@@ -23,10 +23,7 @@
 		<links>
 			<item
 				name="GitHub Project Home"
-				href="https://github.com/synergian/wagon-git" />
-			<item
-				name="Synergian"
-				href="http://synergian.com.ar" />
+				href="https://github.com/tuxedo0801/wagon-git" />			
 		</links>
 
 		<menu name="wagon-git">
@@ -69,9 +66,7 @@
 			<item
 				name="Troubleshooting"
 				href="troubleshooting.html" />
-			<item
-				name="Permanent Installation"
-				href="installation.html" />
+
 		</menu>
 
 		<menu ref="reports" />

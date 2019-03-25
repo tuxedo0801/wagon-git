@@ -26,9 +26,9 @@ Basic Configuration
 ...
   <extensions>
     <extension>
-      <groupId>ar.com.synergian</groupId>
+      <groupId>de.root1</groupId>
       <artifactId>wagon-git</artifactId>
-      <version>${project.version}</version>
+      <version>1.0.0</version> <!-- always check for latest version -->
     </extension>
   </extensions>
 ...
@@ -40,16 +40,35 @@ Basic Configuration
     In the following configuration you'll URLs as the one in this example:
 
 +--
-<url>git:releases://git@github.com:synergian/wagon-git.git</url>
+<url>git:{BRANCH}://{GIT-URL}</url>
 +--
 
      * <<"git">> is the extension enabled by this plugin.
      
-     * <<"releases">> is the name of the <<branch>> in the target repository to use.
+     * <<"{BRANCH}">> is the name of the <<branch>> in the target repository to use. Typicall "releases" or "snapshots"
      
-     * <<"git@github.com:synergian">> git standard domain plus username.
-     
-     * <<"wagon-git.git">> the target repository. 
+     * <<"{GIT-URL}">> git standard domain plus username, OR (as it is a bit more common), the HTTP/HTTPS URL of your repo, like https://github.com/tuxedo0801/wagon-git     
+
+** Private Repositories
+
+   Proceed the same way, but add basic authentication in your Maven settings.xml (usually located at your $MAVEN_HOME directory, check out {{http://maven.apache.org/settings.html}} for a full guide).
+   And you must use an HTTP or HTTPS URL instead of git@ URL
+
++--
+<settings>
+	...
+	<servers>
+		<server>
+			<id>your-repo-id</id>
+			<username>yourUsername</username>
+			<password>yourPassword</password>
+		</server>
+		...
+	</servers>
+	...
+</settings> 
++--
+
 
 * Next steps
 

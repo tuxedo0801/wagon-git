@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ar.com.synergian</groupId>
+    <groupId>de.root1</groupId>
     <artifactId>wagon-git</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>wagon-git</name>
@@ -17,27 +17,20 @@
         <maven>3.2</maven>
     </prerequisites>
 
-    <inceptionYear>2011</inceptionYear>
+    <inceptionYear>2019</inceptionYear>
     <developers>
-        <developer>
-            <name>Martin Schonaker</name>
-            <email>mschonaker@gmail.com</email>
-        </developer>
         <developer>
             <name>Alexander Christian</name>
             <email>info@root1.de</email>
         </developer>
     </developers>
-    <description>A Maven component (a wagon provider) that enables deploying artifacts in remote Git SCM repositories.</description>
+    <description>A Maven component (a wagon provider) that enables deploying artifacts in remote Git SCM repositories. Based on ar.com.synergian:wagon-git:0.3.1-SNAPSHOT, the initial work of Martin Schonaker (mschonaker@gmail.com)</description>
     <issueManagement>
         <system>GitHub Issue Tracker</system>
-        <url>https://github.com/synergian/wagon-git/issues</url>
+        <url>https://github.com/tuxedo0801/wagon-git/issues</url>
     </issueManagement>
-    <url>http://synergian.github.com/wagon-git/</url>
-    <organization>
-        <name>Synergian</name>
-        <url>http://synergian.com.ar</url>
-    </organization>
+    <url>http://tuxedo0801.github.com/wagon-git/</url>
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
@@ -45,10 +38,10 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-<!--    <ciManagement>
-        <system>drone.io</system>
-        <url>https://drone.io/github.com/synergian/wagon-git/latest</url>
-    </ciManagement>-->
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.com/tuxedo0801/wagon-git</url>
+    </ciManagement>
 
     <dependencies>
         <dependency>
@@ -141,19 +134,17 @@
             </plugin>
         </plugins>
         <extensions>
-            <extension>
-                <groupId>ar.com.synergian</groupId>
+            <!-- ########################################################### -->
+            <!-- COMMENT FOR INITIAL DEPLOYMENT TO BREAK DEPENDENCY-CIRCLE   -->
+            <!-- RUN "mvn install", AND UNCOMMENT AGAIN TO BE ABLE TO DEPLOY -->
+<!--            <extension>
+                <groupId>de.root1</groupId>
                 <artifactId>wagon-git</artifactId>
                 <version>${project.version}</version>
-            </extension>
+            </extension>-->
+            <!-- ########################################################### -->
         </extensions>
     </build>
-    
-    <scm>
-        <url>https://github.com/tuxedo0801/wagon-git</url>             
-        <connection>scm:git:ssh://git@github.com/tuxedo0801/wagon-git.git</connection>
-        <tag>HEAD</tag>
-    </scm>
     
     <distributionManagement>
         <repository>

@@ -1,4 +1,4 @@
-package ar.com.synergian.wagongit;
+package de.root1.wagongit;
 
 public class GitException extends Exception {
 

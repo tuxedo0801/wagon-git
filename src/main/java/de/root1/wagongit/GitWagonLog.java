@@ -1,4 +1,4 @@
-package ar.com.synergian.wagongit;
+package de.root1.wagongit;
 
 import org.apache.maven.scm.log.ScmLogger;
 
