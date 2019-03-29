@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.root1</groupId>
+    <artifactId>wagon-git</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>wagon-git</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <prerequisites>
+        <maven>3.2</maven>
+    </prerequisites>
+
+    <inceptionYear>2019</inceptionYear>
+    <developers>
+        <developer>
+            <name>Alexander Christian</name>
+            <email>info@root1.de</email>
+        </developer>
+    </developers>
+    <description>A Maven component (a wagon provider) that enables deploying artifacts in remote Git SCM repositories. Based on ar.com.synergian:wagon-git:0.3.1-SNAPSHOT, the initial work of Martin Schonaker (mschonaker@gmail.com)</description>
+    <issueManagement>
+        <system>GitHub Issue Tracker</system>
+        <url>https://github.com/tuxedo0801/wagon-git/issues</url>
+    </issueManagement>
+    <url>http://tuxedo0801.github.com/wagon-git/</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.com/tuxedo0801/wagon-git</url>
+    </ciManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-gitexe</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-provider-api</artifactId>
+            <version>2.8</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.6.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.apache.maven.scm:maven-scm-api</include>
+                                    <include>org.codehaus.plexus:plexus-utils</include>
+                                    <include>org.apache.maven.scm:maven-scm-provider-gitexe</include>
+                                </includes>
+                            </artifactSet>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <extensions>
+            <!-- ########################################################### -->
+            <!-- COMMENT FOR INITIAL DEPLOYMENT TO BREAK DEPENDENCY-CIRCLE   -->
+            <!-- RUN "mvn install", AND UNCOMMENT AGAIN TO BE ABLE TO DEPLOY -->
+                        <extension>
+                <groupId>de.root1</groupId>
+                <artifactId>wagon-git</artifactId>
+                <version>${project.version}</version>
+            </extension>
+            <!-- ########################################################### -->
+        </extensions>
+    </build>
+    
+    <distributionManagement>
+        <repository>
+            <id>wagon-git-releases</id>
+            <name>root1.de Releases</name>
+            <url>git:releases://https://github.com/tuxedo0801/wagon-git.git</url>                 
+        </repository>
+        <snapshotRepository>
+            <id>wagon-git-snapshots</id>
+            <name>root1.de Snapshots</name>
+            <url>git:snapshots://https://github.com/tuxedo0801/wagon-git.git</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
